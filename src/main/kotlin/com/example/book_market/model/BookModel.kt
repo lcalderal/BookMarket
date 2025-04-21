@@ -1,6 +1,8 @@
 package com.example.book_market.model
 
 import com.example.book_market.enums.BookStatus
+import com.example.book_market.enums.Errors
+import com.example.book_market.exception.BadRequestException
 import jakarta.persistence.*
 import java.math.BigDecimal
 
@@ -25,7 +27,7 @@ data class BookModel(
     var status: BookStatus? = null
         set(value) {
             if (field == BookStatus.DELETADO || field == BookStatus.CANCELADO) {
-                throw IllegalStateException("Cannot change status of a deleted or canceled book")
+                throw BadRequestException(Errors.BM102.message.format(field), Errors.BM102.code)
             }
             field = value
         }

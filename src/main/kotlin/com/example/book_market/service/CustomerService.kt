@@ -1,6 +1,8 @@
 package com.example.book_market.service
 
 import com.example.book_market.enums.CustomerStatus
+import com.example.book_market.enums.Errors
+import com.example.book_market.exception.NotFoundException
 import com.example.book_market.model.CustomerModel
 import com.example.book_market.repository.CustomerRepository
 import org.springframework.data.domain.Page
@@ -21,7 +23,12 @@ class CustomerService(
     }
 
     fun getCustomerById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow()
+        return customerRepository.findById(id).orElseThrow {
+            NotFoundException(
+                message = Errors.BM201.message.format(id),
+                errorCode = Errors.BM201.code
+            )
+        }
     }
 
     fun createCustomer(customer: CustomerModel) {

@@ -1,6 +1,8 @@
 package com.example.book_market.service
 
 import com.example.book_market.enums.BookStatus
+import com.example.book_market.enums.Errors
+import com.example.book_market.exception.NotFoundException
 import com.example.book_market.model.BookModel
 import com.example.book_market.model.CustomerModel
 import com.example.book_market.repository.BookRepository
@@ -24,7 +26,12 @@ class BookService(val bookRepository: BookRepository) {
     }
 
     fun getBookById(id: Int): BookModel {
-        return bookRepository.findById(id).orElseThrow()
+        return bookRepository.findById(id).orElseThrow {
+            NotFoundException(
+                message = Errors.BM101.message.format(id),
+                errorCode = Errors.BM101.code
+            )
+        }
     }
 
     fun deleteBook(id: Int) {
