@@ -7,6 +7,7 @@ import com.example.book_market.extension.toBookModel
 import com.example.book_market.extension.toBookResponse
 import com.example.book_market.service.BookService
 import com.example.book_market.service.CustomerService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -21,7 +22,7 @@ class BookController(
 ) {
 
     @PostMapping
-    fun createBook(@RequestBody request: PostBookRequest) {
+    fun createBook(@RequestBody @Valid request: PostBookRequest) {
         val customerId = customerService.getCustomerById(request.customerId)
         bookService.createBook(request.toBookModel(customerId))
     }

@@ -6,6 +6,7 @@ import com.example.book_market.controller.response.CustomerResponse
 import com.example.book_market.extension.toCustomerModel
 import com.example.book_market.extension.toCustomerResponse
 import com.example.book_market.service.CustomerService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -33,13 +34,13 @@ class CustomerController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createCustomer(@RequestBody customer: PostCustomerRequest) {
+    fun createCustomer(@RequestBody @Valid customer: PostCustomerRequest) {
         customerService.createCustomer(customer.toCustomerModel())
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateCustomer(@PathVariable id: Int, @RequestBody customer: PutCustomerRequest) {
+    fun updateCustomer(@PathVariable id: Int, @RequestBody @Valid customer: PutCustomerRequest) {
         val customerIdSaved = customerService.getCustomerById(id)
         customerService.updateCustomer(customer.toCustomerModel(customerIdSaved))
     }
